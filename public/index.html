@@ -2,33 +2,33 @@
 <!-- Declares meanMapApp as the starting Angular module -->
 <html class="no-js" ng-app="meanMapApp">
 <head>
-    <meta charset="utf-8">
-    <title>Scotch MEAN Map</title>
-    <meta name="description" content="An example demonstrating Google Map integration with MEAN Apps">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Patrol | Crime Data Map</title>
+  <meta name="description" content="MEAN App with Google Maps and SODA API integrations">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="style.css"/>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <link rel="stylesheet" href="style.css"/>
 
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrn605l7RPadiwdzsOlRw9O28lxfYBJ6s"></script>
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPt34WnRJS3S7BvZ2N-n76FFV5VFY6b_A&libraries=visualization"></script>
 
-    <!-- Modernizr -->
-    <script src="../bower_components/modernizr/bin/modernizr"></script>
+  <!-- Modernizr -->
+  <script src="../bower_components/modernizr/bin/modernizr"></script>
 
-    <!-- JS Source -->
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/angular-route/angular-route.js"></script>
-    <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+  <!-- JS Source -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-route/angular-route.js"></script>
+  <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
 
-    <!-- Angular Files -->
-    <script src="js/app.js"></script>
-    <script src="js/gservice.js"></script>
-    <script src="js/addCtrl.js"></script>
-    <script src="js/queryCtrl.js"></script>
-    <script src="js/headerCtrl.js"></script>
+  <!-- Angular Files -->
+  <script src="js/app.js"></script>
+  <script src="js/gservice.js"></script>
+  <script src="js/addCtrl.js"></script>
+  <script src="js/queryCtrl.js"></script>
+  <script src="js/headerCtrl.js"></script>
 </head>
 
 <body>
@@ -37,40 +37,38 @@
 <![endif]-->
 
 <div class="container">
-    <!-- Header Menu. Note use of headerCtrl -->
-    <div class="header" ng-controller="headerCtrl">
+  <div class="header" ng-controller="headerCtrl"> <!-- Header Menu using headerCtrl -->
 
-        <!-- Header items are made active upon selection -->
-        <ul class="nav nav-pills pull-right">
-             <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Join the Team</a></li>
-            <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Find Teammates</a></li>
-        </ul>
+  <ul class="nav nav-pills pull-right">
+    <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Join the Team</a></li>
+    <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Find Teammates</a></li>
+  </ul> <!-- Header items are made active upon selection -->
 
-        <!-- Header Title -->
-        <h3 class="text-muted">The Scotch MEAN MapApp</h3>
-    </div>
-
-    <!-- Map and Side Panel -->
-    <div class="row content">
-
-        <!-- Google Map -->
-        <div class="col-md-7">
-            <div id="map"></div>
-        </div>
-
-        <!-- Side Panel (Controlled by ng-view) -->
-        <div ng-view></div>
-
-    </div>
-    <hr/>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p class="text-center"><span class="glyphicon glyphicon-check"></span> Created by Ahmed Haque for Scotch IO -
-            <a href="https://scotch.io/">App Tutorial</a> | <a href="https://github.com/afhaque/MeanMapAppV2.0">Github Repo</a></p>
-    </div>
-
+  <h3 class="text-muted">Patrol</h3> <!-- Header Title -->
 </div>
+
+  <div class="row content">
+
+    <div class="col-md-7">
+      <div id="map"></div> <!-- Google Map -->
+    </div>
+
+    <div ng-view></div> <!-- Side Panel (Controlled by ng-view) -->
+
+  </div> <!-- Map and Side Panel -->
+  <hr/>
+
+  <div class="footer">
+    <p class="text-center">
+      Credit to Ahmed Haque from scotch.io for the helpful tutorial -
+      <a href="https://scotch.io/">App Tutorial</a> | <a href="https://github.com/alexpadraic/Patrol">Patrol Github Repo</a>
+    </p>
+    <p class="text-center">
+      Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </p>
+  </div> <!-- Footer -->
+
+</div> <!-- Container -->
 
 </body>
 </html>
