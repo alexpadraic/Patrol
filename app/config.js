@@ -1,4 +1,4 @@
-// Sets the MongoDB Database options
+// Sets the MongoDB Database options, Google Maps API key, and Socrata API token and secret key
 
 module.exports = {
 
