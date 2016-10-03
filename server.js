@@ -1,13 +1,13 @@
 // Dependencies
 // -----------------------------------------------------
-var express         = require('express');
-var mongoose        = require('mongoose');
-var port            = process.env.PORT || 3000;
-var database        = require('./app/config');
-var morgan          = require('morgan');
-var bodyParser      = require('body-parser');
-var methodOverride  = require('method-override');
-var app             = express();
+var express        = require('express');
+var mongoose       = require('mongoose');
+var port           = process.env.PORT || 3000;
+var database       = require('./app/config');
+var morgan         = require('morgan');
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
+var app            = express();
 
 // Express Configuration
 // -----------------------------------------------------
