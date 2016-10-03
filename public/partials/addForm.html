@@ -1,69 +1,87 @@
-<!-- "Join Team" (Post) Form -->
-<div class="col-md-5">
+<div class="col-md-5"> <!-- Find Crime Incidents (Query) Form -->
 
-    <!-- Creates Main Panel -->
-    <div class="panel panel-default">
+  <div class="panel panel-default"> <!-- Creates Main Panel -->
 
-        <!-- Panel Title -->
-        <div class="panel-heading">
-            <h2 class="panel-title text-center">Join the Scotch Team! <span class="glyphicon glyphicon-map-marker"></span></h2>
-        </div>
-
-        <!-- Panel Body -->
-        <div class="panel-body">
-
-            <!-- Creates Form (novalidate disables HTML validation, Angular will control) -->
-            <form name ="addForm" novalidate>
-
-                <!-- Text Boxes and Other User Inputs. Note ng-model binds the values to Angular $scope -->
-                <div class="form-group">
-                    <label for="username">Username <span class="badge">All fields required</span></label>
-                    <input type="text" class="form-control" id="username" placeholder="OldandGold" ng-model="formData.username" required>
-                </div>
-                <label class="radio control-label">Gender</label>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="radiomale" value="Male" ng-model="formData.gender">
-                        Male
-                    </label>
-                </div>
-                <div class="radio" required>
-                    <label>
-                        <input type="radio" name="optionsRadios" id="radiofemale" value="Female" ng-model="formData.gender">
-                        Female
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="radioother" value="What's it to ya?" ng-model="formData.gender">
-                        What's it to ya?
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" class="form-control" id="age" placeholder="72" ng-model="formData.age" required>
-                </div>
-                <div class="form-group">
-                    <label for="language">Favorite Language</label>
-                    <input type="text" class="form-control" id="language" placeholder="Fortran" ng-model="formData.favlang" required>
-                </div>
-                <div class="form-group">
-                    <label for="latitude">Latitude</label>
-                    <input type="text" class="form-control" id="latitude" value="39.500" ng-model="formData.latitude" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="longitude">Longitude</label>
-                    <input type="text" class="form-control" id="longitude" value="-98.350" ng-model="formData.longitude" readonly>
-                </div>
-                <div class="form-group">
-                    <!-- Note RefreshLoc button tied to addCtrl. This requests a refresh of the HTML5 verified location. -->
-                    <label for="verified">HTML5 Verified Location? <span><button ng-click="refreshLoc()" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span></button></span></label>
-                    <input type="text" class="form-control" id="verified" placeholder= "Nope (Thanks for spamming my map...)" ng-model="formData.htmlverified" readonly>
-                </div>
-
-                <!-- Submit button. Note that its tied to createUser() function from addCtrl. Also note ng-disabled logic which prevents early submits.  -->
-                <button type="submit" class="btn btn-danger btn-block" ng-click="createUser()" ng-disabled="addForm.$invalid">Submit</button>
-            </form>
-        </div>
+    <div class="panel-heading"> <!-- Panel Title -->
+      <h2 class="panel-title text-center">Patrol the Area</h2>
     </div>
+
+    <div class="panel-body"> <!-- Panel Body -->
+      <form name ="queryForm"> <!-- Creates Form -->
+
+        <!-- Text Boxes and Other User Inputs. Note: ng-model binds the values to Angular $scope -->
+        <div class="form-group">
+          <label for="latitude">Your Latitude</label>
+          <input type="text" class="form-control" id="latitude" placeholder="39.5" ng-model="formData.latitude" readonly>
+        </div>
+        <div class="form-group">
+          <label for="longitude">Your Longitude</label>
+          <input type="text" class="form-control" id="longitude" placeholder="-98.35" ng-model="formData.longitude" readonly>
+        </div>
+        <div class="form-group">
+          <label for="distance">Max. Distance (miles)</label>
+          <input type="text" class="form-control" id="distance" placeholder="500" ng-model="formData.distance">
+        </div>
+
+        <!-- Note ng-true-value which translates check values into day of week integer -->
+        <label>Day of Week</label>
+        <div class="form-group"> <!-- Day of Week Checkboxes -->
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="sunday"    value="Sunday"    ng-model="formData.dayofweek" ng-true-value = "0">Sunday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="monday"    value="Monday"    ng-model="formData.dayofweek" ng-true-value = "1">Monday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="tuesday"   value="Tuesday"   ng-model="formData.dayofweek" ng-true-value = "2">Tuesday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="wednesday" value="Wednesday" ng-model="formData.dayofweek" ng-true-value = "3">Wednesday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="thursday"  value="Thursday"  ng-model="formData.dayofweek" ng-true-value = "4">Thursday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="friday"    value="Friday"    ng-model="formData.dayofweek" ng-true-value = "5">Friday
+          </label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="optionsRadios" id="saturday"  value="Saturday"  ng-model="formData.dayofweek" ng-true-value = "6">Saturday
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="hour">Hour</label>
+          <input type="number" class="form-control" id="hour" placeholder="0 = 12AM | 23 = 11PM" ng-model="formData.hour">
+        </div>
+
+<!--         <div class="form-group">
+          <label for="minage">Min. Age</label>
+          <input type="number" class="form-control" id="minage" placeholder="5" ng-model="formData.minage">
+        </div>
+        <div class="form-group">
+          <label for="maxage">Max Age</label>
+          <input type="number" class="form-control" id="maxage" placeholder="80" ng-model="formData.maxage">
+        </div>
+        <div class="form-group">
+          <label for="favlang">Favorite Language</label>
+          <input type="text" class="form-control" id="favlang" placeholder="Fortran" ng-model="formData.favlang">
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="verified" id="radiomale" value="True" ng-model="formData.verified"> <strong>Include Only HTML5 Verified Locations?</strong>
+            </label>
+          </div>
+        </div> -->
+
+        <!-- Query button. Note that its tied to queryCrimes() function from queryCtrl.  -->
+        <button type="submit" class="btn btn-danger btn-block" ng-click="queryCrimes()">Submit</button>
+      </form>
+    </div>
+
+    <!-- Footer panel for displaying count. Note: it will only display if queryCount is greater than 0 -->
+    <div ng-show="queryCount>0" class="panel-footer">
+      <p class="text-center">Hot Dang! We Found {{queryCount}} Teammates.</p>
+    </div>
+  </div>
 </div>
