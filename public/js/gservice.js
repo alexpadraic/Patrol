@@ -20,6 +20,77 @@ angular.module('gservice', [])
         var selectedLat = 39.50;
         var selectedLong = -98.35;
 
+        var styles = [
+            { "featureType": "all",
+              "elementType": "labels.text",
+              "stylers"    : [{"visibility": "off"}]
+            },
+            { "featureType": "all",
+              "elementType": "labels.icon",
+              "stylers"    : [{"visibility": "off"}]
+            },
+            { "featureType": "administrative",
+              "elementType": "geometry.fill",
+              "stylers"    : [{"color": "#000000"}]
+            },
+            { "featureType": "administrative",
+              "elementType": "geometry.stroke",
+              "stylers"    : [{"color": "#144b53"},{"lightness": 14},{"weight": 1.4}]
+            },
+            { "featureType": "landscape",
+              "elementType": "all",
+              "stylers"    : [{"color": "#08304b"}]
+            },
+            { "featureType": "poi",
+              "elementType": "geometry",
+              "stylers"    : [{"color": "#0c4152"},{"lightness": 5}]
+            },
+            { "featureType": "road.highway",
+              "elementType": "geometry.fill",
+              "stylers"    : [{"color": "#000000"}]
+            },
+            { "featureType": "road.highway",
+              "elementType": "geometry.stroke",
+              "stylers"    : [{"color": "#0b434f"},{"lightness": 25}]
+            },
+            { "featureType": "road.arterial",
+              "elementType": "geometry.fill",
+              "stylers"    : [{"color": "#000000"}]
+            },
+            { "featureType": "road.arterial",
+              "elementType": "geometry.stroke",
+              "stylers"    : [{"color": "#0b3d51"},{"lightness": 16}]
+            },
+            { "featureType": "road.local",
+              "elementType": "geometry",
+              "stylers"    : [{"color": "#000000"}]
+            },
+            { "featureType": "transit",
+              "elementType": "all",
+              "stylers"    : [{"color": "#146474"}]
+            },
+            { "featureType": "water",
+              "elementType": "all",
+              "stylers"    : [{"color": "#021019"}]
+            }
+          ]
+        var gradient = [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+          ]
+
         // Functions
         // --------------------------------------------------------------
         // Refresh the Map with new data. Takes three parameters (lat, long, and filtering results)
@@ -101,6 +172,13 @@ angular.module('gservice', [])
             this.favlang = favlang
         };
 
+        function getPoints() {
+          return [
+          {location: new google.maps.LatLng(37.775, -122.403), weight: 3.06849315068493},
+          {location: new google.maps.LatLng(37.778, -122.406), weight: 1.91780821917808}
+          ];
+        }
+
         // Initializes the map
         var initialize = function(latitude, longitude, filter) {
 
@@ -112,9 +190,17 @@ angular.module('gservice', [])
 
                 // Create a new map and place in the index.html page
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 3,
-                    center: myLatLng
+                    zoom: 13,
+                    center: myLatLng,
+                    styles: styles
                 });
+
+                var heatmap = new google.maps.visualization.HeatmapLayer({
+                  data: getPoints(),
+                  map : map,
+                  gradient: gradient
+                });
+
             }
 
             // If a filter was used set the icons yellow, otherwise blue
