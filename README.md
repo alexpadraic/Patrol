@@ -1,9 +1,6 @@
 # Patrol
 Crime data mapping application
 
-### Team Members
-Alexander Pellas
-
 ### Project Description
 If you have ever been to a strange city and not known which areas of the city to avoid, or if parking your car in a certain spot greatly increases the chance of it getting broken-into, or if you're trying to find the safest walking route home, or if you're a police officer trying to figure out which areas to PATROL at certain times during the week - Patrol is for you.
 
