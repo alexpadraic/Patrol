@@ -15,7 +15,7 @@ San Francisco was just recently deemed the city with the highest per-capita crim
 1) Clone repository and download npm packages
 
 ```
-git clone https://github.com/afhaque/MeanMapAppV2.0.git
+git clone https://github.com/alexpadraic/Patrol.git
 npm install
 ```
 
