@@ -6,6 +6,7 @@
   <title>Patrol | Crime Data Map</title>
   <meta name="description" content="MEAN App with Google Maps and SODA API integrations">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="./shield.png">
 
   <!-- CSS -->
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
@@ -38,33 +39,36 @@
 
 <div class="container">
   <div class="header" ng-controller="headerCtrl"> <!-- Header Menu using headerCtrl -->
+    <ul class="nav nav-pills pull-right">
+      <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Patrol Area</a></li>
+      <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Safe Route</a></li>
+    </ul> <!-- Header items are made active upon selection -->
 
-  <ul class="nav nav-pills pull-right">
-    <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Join the Team</a></li>
-    <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Find Teammates</a></li>
-  </ul> <!-- Header items are made active upon selection -->
-
-  <h3 class="text-muted">Patrol</h3> <!-- Header Title -->
-</div>
+    <h3 class="text-muted">Patrol</h3> <!-- Header Title -->
+  </div>
 
   <div class="row content">
-
-    <div class="col-md-7">
+    <div class="col-md-8">
       <div id="map"></div> <!-- Google Map -->
+
+      <div id="floating-panel">
+        <button class="btn-xs btn-default" onclick="toggleDrugs()"><b>Drugs & Drinking</b></button>
+        <button class="btn-xs btn-default" onclick="toggleMisd()"><b>Misdemeanors</b></button>
+        <button class="btn-xs btn-default" onclick="toggleTheft()"><b>Theft</b></button>
+        <button class="btn-xs btn-default" onclick="toggleViolent()"><b>Violent</b></button>
+        <button class="btn-xs btn-default" onclick="toggleTotal()"><b>Total</b></button>
+      </div>
     </div>
 
     <div ng-view></div> <!-- Side Panel (Controlled by ng-view) -->
-
   </div> <!-- Map and Side Panel -->
   <hr/>
 
   <div class="footer">
-    <p class="text-center">
-      Credit to Ahmed Haque from scotch.io for the helpful tutorial -
+    <p class="text-center">Credit to Ahmed Haque from scotch.io for the helpful tutorial -
       <a href="https://scotch.io/">App Tutorial</a> | <a href="https://github.com/alexpadraic/Patrol">Patrol Github Repo</a>
     </p>
-    <p class="text-center">
-      Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    <p class="text-center">Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </p>
   </div> <!-- Footer -->
 
