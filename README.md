@@ -1,29 +1,14 @@
 # Patrol
 Crime data mapping application
 
-### Import csv of analyzed data
-mongoimport -d patrol -c crimepoints --type csv --file CrimePoints_forupload.csv --headerline
+### Team Members
+Alexander Pellas
 
+### Project Description
+If you have ever been to a strange city and not known which areas of the city to avoid, or if parking your car in a certain spot greatly increases the chance of it getting broken-into, or if you're trying to find the safest walking route home, or if you're a police officer trying to figure out which areas to PATROL at certain times during the week - Patrol is for you.
 
+San Francisco was just recently deemed the city with the highest per-capita crime rate. With the recent wave of violent crime and car break-ins, the visibility to this crime is what could empower the community to salve a problem the police can't on their own. People commit crimes because they think they can get away with it. The hope of this application is to increase the visibility to decrease the opportunity for crime to happen.
 
-
-
-
-# MeanMapAppV2.0
-Basic application demonstrating MEAN (Mongo, Express, Angular, and Node) Integration with Google Maps. Application allows users to add themselves onto a Google Map map with identifying markers based on their form response. The application also demonstrates the use of HTML5 validated geolocation and the use of geospatial filtering through MongoDB.
-
-![appimage](https://raw.githubusercontent.com/afhaque/MeanMapAppV2.0/master/Resources/AppImage.png)
-
-## Demo Link
-
-https://mean-google-maps.herokuapp.com/#/join
-
-## Full Tutorial
-Part I
-https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i
-
-Part II
-https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-ii
 
 ## Instructions to run locally
 
@@ -34,7 +19,13 @@ git clone https://github.com/afhaque/MeanMapAppV2.0.git
 npm install
 ```
 
-2) Launch mongod in one terminal then run server.js
+2)  Import csv of analyzed data
+
+```
+mongoimport -d patrol -c crimepoints --type csv --file CrimePoints_forupload.csv --headerline
+```
+
+3) Launch mongod in one terminal then run server.js in another tab
 
 ````
 mongod
@@ -45,5 +36,5 @@ node server.js
 
 ## Questions
 
-For questions, contact Ahmed Haque (afhaque@rice.edu)
+For questions, contact Alexander Pellas (alexpadraic@gmail.com)
 
