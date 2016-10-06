@@ -17,6 +17,8 @@ queryCtrl.controller('queryCtrl', function($scope, $log, $http, $rootScope, geol
     // Set the latitude and longitude equal to the HTML5 coordinates
     $scope.formData.longitude = parseFloat(coords.long).toFixed(3);
     $scope.formData.latitude = parseFloat(coords.lat).toFixed(3);
+
+    gservice.refresh($scope.formData.latitude, $scope.formData.longitude);
   });
 
   // Update coordinates on the form when a click is detected
@@ -29,51 +31,51 @@ queryCtrl.controller('queryCtrl', function($scope, $log, $http, $rootScope, geol
     });
   });
 
-  // Take query parameters and incorporate into a JSON queryBody
-  $scope.queryCrimes = function(){
+  // // Take query parameters and incorporate into a JSON queryBody
+  // $scope.queryCrimes = function(){
 
-    // Assemble the query body from the submitted form data
-    queryBody = {
-      longitude: parseFloat($scope.formData.longitude),
-      latitude: parseFloat($scope.formData.latitude),
-      distance: parseFloat($scope.formData.distance),
-      male: $scope.formData.male,
-      female: $scope.formData.female,
-      other: $scope.formData.other,
-      minAge: $scope.formData.minage,
-      maxAge: $scope.formData.maxage,
-      favlang: $scope.formData.favlang,
-      reqVerified: $scope.formData.verified
+  //   // Assemble the query body from the submitted form data
+  //   queryBody = {
+  //     longitude: parseFloat($scope.formData.longitude),
+  //     latitude: parseFloat($scope.formData.latitude),
+  //     distance: parseFloat($scope.formData.distance),
+  //     male: $scope.formData.male,
+  //     female: $scope.formData.female,
+  //     other: $scope.formData.other,
+  //     minAge: $scope.formData.minage,
+  //     maxAge: $scope.formData.maxage,
+  //     favlang: $scope.formData.favlang,
+  //     reqVerified: $scope.formData.verified
 
-      // incidntnum
-      // category
-      // descript
-      // dayofweek
-      // date
-      // time
-      // pddistrict
-      // resolution
-      // address
-      // x
-      // y
-      // location
-    };
+  //     // incidntnum
+  //     // category
+  //     // descript
+  //     // dayofweek
+  //     // date
+  //     // time
+  //     // pddistrict
+  //     // resolution
+  //     // address
+  //     // x
+  //     // y
+  //     // location
+  //   };
 
-    // Post the queryBody to the SF Open Data POST route to retrieve the filtered results
-    $http.post('https://data.sfgov.org/resource/cuks-n6tp.json', queryBody)
+  //   // Post the queryBody to the SF Open Data POST route to retrieve the filtered results
+  //   $http.post('https://data.sfgov.org/resource/cuks-n6tp.json', queryBody)
 
-    // Store the filtered results in queryResults
-    .success(function(queryResults){
+  //   // Store the filtered results in queryResults
+  //   .success(function(queryResults){
 
-      // Pass the filtered results to the Google Map Service and refresh the map
-      gservice.refresh(queryBody.latitude, queryBody.longitude, queryResults);
+  //     // Pass the filtered results to the Google Map Service and refresh the map
+  //     gservice.refresh(queryBody.latitude, queryBody.longitude, queryResults);
 
-      // Count the number of records retrieved for the panel-footer
-      $scope.queryCount = queryResults.length;
-    })
-    .error(function(queryResults){
-      console.log('Error ' + queryResults);
-    })
-  };
+  //     // Count the number of records retrieved for the panel-footer
+  //     $scope.queryCount = queryResults.length;
+  //   })
+  //   .error(function(queryResults){
+  //     console.log('Error ' + queryResults);
+  //   })
+  // };
 });
 
