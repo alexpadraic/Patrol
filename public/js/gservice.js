@@ -9,19 +9,17 @@ angular.module('gservice', [])
     googleMapService.clickLat  = 0;
     googleMapService.clickLong = 0;
 
-    // Array of locations obtained from API calls
+    // Array of locations and heatmap points obtained from API calls
     var locations = [];
+    var crimepoints = [];
 
-    // Variables we'll use to help us pan to the right spot
+    // Variables used to pan to the right spot
     var lastMarker;
     var currentSelectedMarker;
 
     // Selected Location (initialize to Sutro Tower - San Francisco)
     var selectedLat  = 37.755;
     var selectedLong = -122.453;
-
-    // Set path for blue icon marker
-    var icon = './map_icon_24.png'
 
     // Set map style
     var styles = [{ "featureType": "all",
@@ -41,8 +39,8 @@ angular.module('gservice', [])
                     "stylers"    : [{"color": "#144b53"},{"lightness": 14},{"weight": 1.4}]
                   },
                   { "featureType": "landscape",
-                  "elementType": "all",
-                  "stylers"    : [{"color": "#08304b"}]
+                    "elementType": "all",
+                    "stylers"    : [{"color": "#08304b"}]
                   },
                   { "featureType": "poi",
                     "elementType": "geometry",
@@ -76,23 +74,23 @@ angular.module('gservice', [])
                     "elementType": "all",
                     "stylers"    : [{"color": "#021019"}]
                   }
-    ]
+                ]
 
-    // Set map style
+    // Set heatmap gradient
     var gradient = ['rgba(0, 255, 255, 0)',
                     'rgba(0, 255, 255, 1)',
                     'rgba(0, 191, 255, 1)',
                     'rgba(0, 127, 255, 1)',
-                    'rgba(0, 63, 255, 1)',
-                    'rgba(0, 0, 255, 1)',
-                    'rgba(0, 0, 223, 1)',
-                    'rgba(0, 0, 191, 1)',
-                    'rgba(0, 0, 159, 1)',
-                    'rgba(0, 0, 127, 1)',
-                    'rgba(63, 0, 91, 1)',
-                    'rgba(127, 0, 63, 1)',
-                    'rgba(191, 0, 31, 1)',
-                    'rgba(255, 0, 0, 1)'
+                    'rgba(0,  63, 255, 1)',
+                    'rgba(0,   0, 255, 1)',
+                    'rgba(0,   0, 223, 1)',
+                    'rgba(0,   0, 191, 1)',
+                    'rgba(0,   0, 159, 1)',
+                    'rgba(0,   0, 127, 1)',
+                    'rgba(63,  0,  91, 1)',
+                    'rgba(127, 0,  63, 1)',
+                    'rgba(191, 0,  31, 1)',
+                    'rgba(255, 0,   0, 1)'
                     ]
 
     // Functions
@@ -110,7 +108,7 @@ angular.module('gservice', [])
       // If filtered results are provided in the refresh() call...
       if (filteredResults){
 
-        // Then convert the filtered results into map points.
+        // Then convert the filtered results into markers
         locations = convertToMapPoints(filteredResults);
 
         // Then, initialize the map
@@ -120,18 +118,19 @@ angular.module('gservice', [])
       // If no filter is provided in the refresh() call...
       else {
         var now       = new Date();
-        var dayofweek = now.getDay();
         var hour      = now.getHours();
+        var dayofweek = now.getDay();
+        console.log(hour);
 
-        // Perform an AJAX call to get all of the records in the db.
-        $http.get('/crimepoints?dayofweek=' + dayofweek + '&hour=' + hour).success(function(response){
+        $http.get('/crimepoints', {params:{"dayofweek": dayofweek, "hour": hour}})
+          .success(function(response){
 
-          // Then convert the results into map points
-          locations = convertToMapPoints(response);
+            // Then convert the results into map points
+            // locations = convertToMapPoints(response);
 
-          // Then initialize the map
-          initialize(latitude, longitude);
-        }).error(function(){});
+            // Then initialize the map
+            initialize(latitude, longitude);
+          }).error(function(){});
       }
     };
 
@@ -139,7 +138,7 @@ angular.module('gservice', [])
     // --------------------------------------------------------------
 
     // Convert a JSON of users into map points
-    var convertToMapPoints = function(response){
+    function convertToMapPoints(response){
 
       // Clear the locations holder
       var locations = [];
@@ -156,8 +155,8 @@ angular.module('gservice', [])
                             '<br><b>Total:</b>           ' + crimepoint.total + '</p>';
 
         // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
-        locations.push(new Location(
-          new google.maps.LatLng(crimepoint.location[1], crimepoint.location[0]),
+        locations.push(new Marker(
+          new google.maps.LatLng(crimepoint.latitude, crimepoint.longitude),
           new google.maps.InfoWindow({
             content: contentString,
             maxWidth: 320
@@ -174,7 +173,7 @@ angular.module('gservice', [])
     };
 
     // Constructor for generic location
-    var Location = function(latlon, message, drugdrink, misdemean, theft, violent, total){
+    function Marker(latlon, message, drugdrink, misdemean, theft, violent, total){
       this.latlon    = latlon;
       this.message   = message;
       this.drugdrink = drugdrink;
@@ -184,22 +183,18 @@ angular.module('gservice', [])
       this.total     = total
     };
 
-    function getPoints() {
+    function getPoints(response) {
+      // var heatmapPoints = [];
+
       // locations.forEach(function(n, i){
-      //   var marker = new google.maps.Marker({
-      //     position: n.latlon,
-      //     map     : map,
-      //     icon    : icon
-      //   });
-
-      //   // For each marker created, add a listener that checks for clicks
-      //   google.maps.event.addListener(marker, 'click', function(e){
-
-      //     // When clicked, open the selected marker's message
-      //     currentSelectedMarker = n;
-      //     n.message.open(map, marker);
+      //   heatmapPoints.push({
+      //     location: n.latlon,
+      //     weight  : n.total
       //   });
       // });
+
+      // return heatmapPoints;
+
 
       return [
       {location: new google.maps.LatLng(37.775, -122.403), weight: 3.06849315068493},
@@ -208,17 +203,21 @@ angular.module('gservice', [])
     }
 
     // Initializes the map
-    var initialize = function(latitude, longitude) {
+    function initialize(latitude, longitude) {
 
       // Uses the selected lat, long as starting point
       var myLatLng = {lat: selectedLat, lng: selectedLong};
+
+      // Bring in the current set of heatmap points
+      var now = new Date();
+      var hour = now.getHours();
 
       // If map has not been created...
       if (!map){
 
         // Create a new map and place in the index.html page
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom  : 14,
+          zoom  : 15,
           center: myLatLng,
           styles: styles
         });
@@ -235,7 +234,7 @@ angular.module('gservice', [])
         var marker = new google.maps.Marker({
           position: n.latlon,
           map     : map,
-          icon    : icon
+          icon    : './blue_dot.png'
         });
 
         // For each marker created, add a listener that checks for clicks
@@ -247,34 +246,38 @@ angular.module('gservice', [])
         });
       });
 
-      // Set initial location as a bouncing red marker
+      // Set initial location as a bouncing blue marker
       var initialLocation = new google.maps.LatLng(latitude, longitude);
       var marker = new google.maps.Marker({
         position : initialLocation,
         animation: google.maps.Animation.BOUNCE,
         map      : map,
-        icon     : icon
+        icon     : './map_icon_24.png'
       });
       lastMarker = marker;
 
       // Function for moving to a selected location
       map.panTo(new google.maps.LatLng(latitude, longitude));
 
-      // Clicking on the Map moves the bouncing red marker
+      // Clicking on the Map moves the bouncing blue marker to the nearest crimepoint location
       google.maps.event.addListener(map, 'click', function(e){
+        var lat  = e.latLng.lat().toFixed(3);
+        var long = e.latLng.lng().toFixed(3);
+        var newPosition = new google.maps.LatLng(lat, long);
+
         var marker = new google.maps.Marker({
-          position : e.latLng,
+          position : newPosition,
           animation: google.maps.Animation.BOUNCE,
           map      : map,
-          icon     : icon
+          icon     : './map_icon_24.png'
         });
 
-        // When a new spot is selected, delete the old red bouncing marker
+        // When a new spot is selected, delete the old blue bouncing marker
         if(lastMarker){
           lastMarker.setMap(null);
         }
 
-        // Create a new red bouncing marker and move to it
+        // Create a new blue bouncing marker and move to it
         lastMarker = marker;
         map.panTo(marker.position);
 
