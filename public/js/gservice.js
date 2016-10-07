@@ -215,7 +215,7 @@ angular.module('gservice', [])
 
         // Create a new map and place in the index.html page
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom  : 15,
+          zoom  : 16,
           center: myLatLng,
           // scrollwheel: false,
           styles: styles
@@ -223,7 +223,7 @@ angular.module('gservice', [])
         var heatmap = new google.maps.visualization.HeatmapLayer({
           data    : crimepoints,
           map     : map,
-          radius  : 75,
+          radius  : 65,
           maxIntensity: 10,
           opacity: 0.275,
           gradient: gradient
