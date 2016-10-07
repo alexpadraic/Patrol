@@ -10,7 +10,8 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/freelancer.min.css">
 
   <!-- Google Maps API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPt34WnRJS3S7BvZ2N-n76FFV5VFY6b_A&libraries=visualization"></script>
@@ -40,8 +41,8 @@
 <div class="container">
   <div class="header" ng-controller="headerCtrl"> <!-- Header Menu using headerCtrl -->
     <ul class="nav nav-pills pull-right">
-      <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Patrol Area</a></li>
-      <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Safe Route</a></li>
+      <li ng-class="{ active: isActive('/crimepoints')}"><a href="/#/crimepoints"><h6>Patrol the Area</h6></a></li>
+      <li ng-class="{ active: isActive('/incidents')}"><a href="/#/incidents"><h6>Find Incidents</h6></a></li>
     </ul> <!-- Header items are made active upon selection -->
 
     <h3 class="text-muted">Patrol</h3> <!-- Header Title -->

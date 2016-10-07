@@ -11,15 +11,15 @@ module.exports = {
 
     local:
     {
-        name: "patrol-map-local",
-        url: "mongodb://localhost/Patrol",
+        name: "patrol",
+        url: "mongodb://localhost/patrol",
         port: 27017
     },
 
     localtest:
     {
-        name: "patrol-map-local",
-        url: "mongodb://localhost/PatrolTest",
+        name: "patrol",
+        url: "mongodb://localhost/patrol",
         port: 27017
     }
 

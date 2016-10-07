@@ -1,19 +1,19 @@
-// Declares the initial angular module "meanMapApp". Module grabs other controllers and services.
+// Declares the initial angular module "patrol" - module grabs other controllers and services
 var app = angular.module('patrol', ['addCtrl', 'queryCtrl', 'headerCtrl', 'geolocation', 'gservice', 'ngRoute'])
 
-    // Configures Angular routing -- showing the relevant view and controller when needed.
-    .config(function($routeProvider){
+  // Configures Angular routing -- showing the relevant view and controller when needed
+  .config(function($routeProvider){
 
-        // Join Team Control Panel
-        $routeProvider.when('/join', {
-            controller: 'addCtrl',
-            templateUrl: 'partials/addForm.html',
+    // Join Team Control Panel
+    $routeProvider.when('/crimepoints', {
+      controller : 'queryCtrl',
+      templateUrl: 'partials/queryForm.html',
 
-        // Find Teammates Control Panel
-        }).when('/find', {
-            controller: 'queryCtrl',
-            templateUrl: 'partials/queryForm.html',
+    // Find recent crimes
+    }).when('/incidents', {
+      controller : 'addCtrl',
+      templateUrl: 'partials/addForm.html',
 
-        // All else forward to the Join Team Control Panel
-        }).otherwise({redirectTo:'/join'})
-    });
+      // Otherwise forward to the crimepoint query panel
+    }).otherwise({redirectTo:'/crimepoints'})
+  });

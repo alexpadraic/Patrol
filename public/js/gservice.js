@@ -12,16 +12,13 @@ angular.module('gservice', [])
     // Array of locations obtained from API calls
     var locations = [];
 
-    // Variables we'll use to help us pan to the right spot
+    // Variables used to pan to the right spot
     var lastMarker;
     var currentSelectedMarker;
 
-    // Selected Location (initialize to Sutro Tower - San Francisco)
+    // initialize to Sutro Tower - San Francisco
     var selectedLat  = 37.755;
     var selectedLong = -122.453;
-
-    // Set path for blue icon marker
-    var icon = './map_icon_24.png'
 
     // Set map style
     var styles = [{ "featureType": "all",
@@ -41,8 +38,8 @@ angular.module('gservice', [])
                     "stylers"    : [{"color": "#144b53"},{"lightness": 14},{"weight": 1.4}]
                   },
                   { "featureType": "landscape",
-                  "elementType": "all",
-                  "stylers"    : [{"color": "#08304b"}]
+                    "elementType": "all",
+                    "stylers"    : [{"color": "#08304b"}]
                   },
                   { "featureType": "poi",
                     "elementType": "geometry",
@@ -76,73 +73,67 @@ angular.module('gservice', [])
                     "elementType": "all",
                     "stylers"    : [{"color": "#021019"}]
                   }
-    ]
+                ]
 
-    // Set map style
-    var gradient = ['rgba(0, 255, 255, 0)',
+    // Set heatmap gradient
+      var gradient = [
+                    'rgba(0, 255, 255, 0)',
                     'rgba(0, 255, 255, 1)',
                     'rgba(0, 191, 255, 1)',
                     'rgba(0, 127, 255, 1)',
-                    'rgba(0, 63, 255, 1)',
-                    'rgba(0, 0, 255, 1)',
-                    'rgba(0, 0, 223, 1)',
-                    'rgba(0, 0, 191, 1)',
-                    'rgba(0, 0, 159, 1)',
-                    'rgba(0, 0, 127, 1)',
-                    'rgba(63, 0, 91, 1)',
-                    'rgba(127, 0, 63, 1)',
-                    'rgba(191, 0, 31, 1)',
-                    'rgba(255, 0, 0, 1)'
+                    'rgba(0,  63, 255, 1)',
+                    'rgba(0,   0, 255, 1)',
+                    'rgba(0,   0, 223, 1)',
+                    'rgba(0,   0, 191, 1)',
+                    'rgba(0,   0, 159, 1)',
+                    'rgba(0,   0, 127, 1)',
+                    'rgba(63,  0,  91, 1)',
+                    'rgba(127, 0,  63, 1)',
+                    'rgba(191, 0,  31, 1)',
+                    'rgba(255, 0,   0, 1)'
                     ]
 
     // Functions
     // --------------------------------------------------------------
-    // Refresh the Map with new data. Takes three parameters (lat, long, and filtering results)
-    googleMapService.refresh = function(latitude, longitude, filteredResults){
+    // Refresh the Map with new data. Takes two parameters (lat, long)
+    googleMapService.refresh = function(latitude, longitude){
+      console.log("Refreshing the map");
 
       // Clears the holding array of locations
-      locations = [];
+      markers = [];
+      crimepoints = [];
 
       // Set the selected lat and long equal to the ones provided on the refresh() call
       selectedLat  = latitude;
       selectedLong = longitude;
 
-      // If filtered results are provided in the refresh() call...
-      if (filteredResults){
+      console.log("Getting current time");
+      var now       = new Date();
+      var hour      = now.getHours();
+      var dayofweek = now.getDay();
 
-        // Then convert the filtered results into map points.
-        locations = convertToMapPoints(filteredResults);
+      $http.get('/crimepoints', {params:{"dayofweek": dayofweek, "hour": hour}})
+        .success(function(response){
+          console.log("Retrieving locations");
 
-        // Then, initialize the map
-        initialize(latitude, longitude);
-      }
-
-      // If no filter is provided in the refresh() call...
-      else {
-        var now       = new Date();
-        var dayofweek = now.getDay();
-        var hour      = now.getHours();
-
-        // Perform an AJAX call to get all of the records in the db.
-        $http.get('/crimepoints?dayofweek=' + dayofweek + '&hour=' + hour).success(function(response){
-
-          // Then convert the results into map points
-          locations = convertToMapPoints(response);
+          // Then convert the results into markers and heatmap crimepoints
+          markers = convertToMarkers(response);
+          crimepoints = convertToCrimepoints(response);
 
           // Then initialize the map
           initialize(latitude, longitude);
         }).error(function(){});
-      }
     };
 
     // Private Inner Functions
     // --------------------------------------------------------------
 
-    // Convert a JSON of users into map points
-    var convertToMapPoints = function(response){
+    // Convert a JSON of locations into markers
+    function convertToMarkers(response){
+      console.log("Converting to markers");
 
       // Clear the locations holder
-      var locations = [];
+      var markers = [];
 
       // Loop through all of the JSON entries provided in the response
       for(var i= 0; i < response.length; i++) {
@@ -156,8 +147,8 @@ angular.module('gservice', [])
                             '<br><b>Total:</b>           ' + crimepoint.total + '</p>';
 
         // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
-        locations.push(new Location(
-          new google.maps.LatLng(crimepoint.location[1], crimepoint.location[0]),
+        markers.push(new Marker(
+          new google.maps.LatLng(crimepoint.latitude, crimepoint.longitude),
           new google.maps.InfoWindow({
             content: contentString,
             maxWidth: 320
@@ -170,11 +161,11 @@ angular.module('gservice', [])
           ))
         }
       // location is now an array populated with records in Google Maps format
-      return locations;
+      return markers;
     };
 
     // Constructor for generic location
-    var Location = function(latlon, message, drugdrink, misdemean, theft, violent, total){
+    function Marker(latlon, message, drugdrink, misdemean, theft, violent, total){
       this.latlon    = latlon;
       this.message   = message;
       this.drugdrink = drugdrink;
@@ -184,58 +175,67 @@ angular.module('gservice', [])
       this.total     = total
     };
 
-    function getPoints() {
-      // locations.forEach(function(n, i){
-      //   var marker = new google.maps.Marker({
-      //     position: n.latlon,
-      //     map     : map,
-      //     icon    : icon
-      //   });
+    // Convert a JSON of locations into heatmap crimepoints
+    function convertToCrimepoints(response) {
+      console.log("Converting to heatmap crimepoints");
 
-      //   // For each marker created, add a listener that checks for clicks
-      //   google.maps.event.addListener(marker, 'click', function(e){
+      // Clear the locations holder
+      var crimepoints = [];
 
-      //     // When clicked, open the selected marker's message
-      //     currentSelectedMarker = n;
-      //     n.message.open(map, marker);
-      //   });
-      // });
+      // Loop through all of the JSON entries provided in the response
+      for(var i= 0; i < response.length; i++) {
+        var location = response[i];
 
-      return [
-      {location: new google.maps.LatLng(37.775, -122.403), weight: 3.06849315068493},
-      {location: new google.maps.LatLng(37.778, -122.406), weight: 1.91780821917808}
-      ];
+        // Converts each of the JSON records into Google Maps Location format (Note Lat, Lng format).
+        crimepoints.push({location: new google.maps.LatLng(location.latitude, location.longitude), weight:location.total});
+      };
+      // location is now an array populated with records in Google Maps format
+      return crimepoints;
     }
 
+    // Constructor for generic location
+    function Crimepoint(latlon, index){
+      this.location = latlon;
+      this.weight   = index
+    };
+
     // Initializes the map
-    var initialize = function(latitude, longitude) {
+    function initialize(latitude, longitude) {
+      console.log("Initializing the map");
+      // console.log(crimepoints);
+      // console.log(markers);
+
 
       // Uses the selected lat, long as starting point
-      var myLatLng = {lat: selectedLat, lng: selectedLong};
+      var myLatLng = new google.maps.LatLng(selectedLat, selectedLong);
+
 
       // If map has not been created...
       if (!map){
 
         // Create a new map and place in the index.html page
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom  : 14,
+          zoom  : 15,
           center: myLatLng,
+          // scrollwheel: false,
           styles: styles
         });
-
         var heatmap = new google.maps.visualization.HeatmapLayer({
-          data    : getPoints(),
+          data    : crimepoints,
           map     : map,
+          radius  : 75,
+          maxIntensity: 10,
+          opacity: 0.275,
           gradient: gradient
         });
       }
 
-      // Loop through each location in the array and place a marker
-      locations.forEach(function(n, i){
+      // Loop through each marker in the array and place a marker
+      markers.forEach(function(n, i){
         var marker = new google.maps.Marker({
           position: n.latlon,
           map     : map,
-          icon    : icon
+          icon    : './blue_dot.png'
         });
 
         // For each marker created, add a listener that checks for clicks
@@ -247,34 +247,38 @@ angular.module('gservice', [])
         });
       });
 
-      // Set initial location as a bouncing red marker
+      // Set initial location as a bouncing blue marker
       var initialLocation = new google.maps.LatLng(latitude, longitude);
       var marker = new google.maps.Marker({
         position : initialLocation,
         animation: google.maps.Animation.BOUNCE,
         map      : map,
-        icon     : icon
+        icon     : './map_icon_24.png'
       });
       lastMarker = marker;
 
       // Function for moving to a selected location
       map.panTo(new google.maps.LatLng(latitude, longitude));
 
-      // Clicking on the Map moves the bouncing red marker
+      // Clicking on the Map moves the bouncing blue marker to the nearest crimepoint location
       google.maps.event.addListener(map, 'click', function(e){
+        var lat  = e.latLng.lat().toFixed(3);
+        var long = e.latLng.lng().toFixed(3);
+        var newPosition = new google.maps.LatLng(lat, long);
+
         var marker = new google.maps.Marker({
-          position : e.latLng,
+          position : newPosition,
           animation: google.maps.Animation.BOUNCE,
           map      : map,
-          icon     : icon
+          icon     : './map_icon_24.png'
         });
 
-        // When a new spot is selected, delete the old red bouncing marker
+        // When a new spot is selected, delete the old blue bouncing marker
         if(lastMarker){
           lastMarker.setMap(null);
         }
 
-        // Create a new red bouncing marker and move to it
+        // Create a new blue bouncing marker and move to it
         lastMarker = marker;
         map.panTo(marker.position);
 
