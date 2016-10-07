@@ -22,7 +22,7 @@ npm install
 2)  Import csv of analyzed data
 
 ```
-mongoimport -d patrol -c crimepoints --type csv --file CrimePoints_forupload.csv --headerline
+mongoimport -d patrol -c crimepoints --type csv --file crimepointsForUpload.csv --headerline
 ```
 
 3) Launch mongod in one terminal then run server.js in another tab
