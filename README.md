@@ -6,6 +6,7 @@ If you have ever been to a strange city and not known which areas of the city to
 
 San Francisco was just recently deemed the city with the highest per-capita crime rate. With the recent wave of violent crime and car break-ins, the visibility to this crime is what could empower the community to salve a problem the police can't on their own. People commit crimes because they think they can get away with it. The hope of this application is to increase the visibility to decrease the opportunity for crime to happen.
 
+![Image of Patrol over China Basin in SF at 4pm on a Friday](./public/PatrolScreenshot.png)
 
 ## Instructions to run locally
 
