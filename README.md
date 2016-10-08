@@ -8,9 +8,19 @@ San Francisco was just recently deemed the city with the highest per-capita crim
 
 People commit crimes because they think they can get away with it, and the goal of this application is to increase the visibility of crime in your neighborhood, around your hotel, on your walk back home, etc. to both decrease crime opportunity and make citizens more aware of their surroundings.
 
-## Patrol over China Basin in SF at 4:30pm on a Friday
+
+
+### Patrol over China Basin in SF at 4:30pm on a Friday
 
 ![Image of Patrol over China Basin in SF at 4pm on a Friday](./public/PatrolScreenshot.png)
+
+
+
+### Patrol over San Francisco at 7:15pm on a Friday
+
+![Image of Patrol over San Francisco at 7:15pm on a Friday](./public/PatrolSFScreenshot.png)
+
+
 
 ## Instructions to run locally
 
@@ -36,6 +46,8 @@ node server.js
 ````
 
 3) Open browser and navigate to `http://localhost:3000/`
+
+
 
 ## Questions
 
